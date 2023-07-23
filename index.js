@@ -32,8 +32,6 @@ const config = new ConfigProvider({
   }
 });
 
-const intents = new IntentsBitField([IntentsBitField.Flags.Guilds, IntentsBitField.Flags.GuildMessages]);
-
 const client = new ExtendedClient({
   prefix: config.get('PREFIX'),
   owner: '191330192868769793',
@@ -49,7 +47,7 @@ const client = new ExtendedClient({
   },
   config,
   errorOwnerReporting: true,
-  intents: intents.bitfield,
+  intents: new IntentsBitField([IntentsBitField.Flags.Guilds, IntentsBitField.Flags.GuildMessages, IntentsBitField.Flags.MessageContent]).bitfield,
   testingGuildID: '756628171494916098',
   localizer: {
     defaultLocale: 'en',
