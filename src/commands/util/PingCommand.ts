@@ -10,8 +10,8 @@ class PingCommand extends RegularCommand {
     });
   }
 
-  run(message: Message) {
-    return message.reply('Pong!');
+  async run(message: Message) {
+    await message.reply('Pong!');
   }
 }
 

@@ -10,8 +10,8 @@ class ArgsListCommand extends RegularCommand {
     });
   }
 
-  run(message: Message, args: string[]) {
-    return message.reply(args.join('\n- '));
+  async run(message: Message, args: string[]) {
+    await message.reply(args.join('\n- '));
   }
 }
 
