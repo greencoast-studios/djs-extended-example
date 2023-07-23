@@ -1,5 +1,5 @@
 const { SlashCommand } = require('@greencoast/discord.js-extended');
-const { SlashCommandBuilder } = require('@discordjs/builders');
+const { SlashCommandBuilder } = require('discord.js');
 
 class LocalizedSlashCommand extends SlashCommand {
   constructor(client) {

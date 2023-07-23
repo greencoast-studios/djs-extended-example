@@ -1,5 +1,5 @@
 const { SlashCommand } = require('@greencoast/discord.js-extended');
-const { SlashCommandBuilder } = require('@discordjs/builders');
+const { SlashCommandBuilder } = require('discord.js');
 
 class ArgsListSlashCommand extends SlashCommand {
   constructor(client) {
@@ -12,8 +12,8 @@ class ArgsListSlashCommand extends SlashCommand {
     });
   }
 
-  run(interaction) {
-    interaction.reply(interaction.options.getString('args'));
+  async run(interaction) {
+    await interaction.reply(interaction.options.getString('args'));
   }
 }
 

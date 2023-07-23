@@ -1,8 +1,8 @@
 version: "3.9"
+name: djs-extended-testing
 
 services:
   redis:
-    container_name: djs-ext-example-redis
     image: redis:latest
     restart: unless-stopped
     volumes:

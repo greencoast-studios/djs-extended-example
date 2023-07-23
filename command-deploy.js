@@ -1,6 +1,7 @@
 require('dotenv').config();
 const path = require('path');
 const { ExtendedClient, ConfigProvider } = require('@greencoast/discord.js-extended');
+const { IntentsBitField } = require('discord.js');
 
 const config = new ConfigProvider({
   env: process.env,
@@ -12,7 +13,7 @@ const config = new ConfigProvider({
 
 const client = new ExtendedClient({
   config,
-  intents: []
+  intents: new IntentsBitField().bitfield
 });
 
 client.registry
