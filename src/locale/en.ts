@@ -10,7 +10,9 @@ const EXTRA = {
   'extra.only_english': "I'm only available in english."
 };
 
-module.exports = {
+const strings = {
   ...GREETINGS,
   ...EXTRA
-};
+}
+
+export default strings;

@@ -1,14 +1,15 @@
-require('dotenv').config();
-const path = require('path');
-const logger = require('@greencoast/logger');
-const { IntentsBitField } = require('discord.js');
-const { ExtendedClient, ConfigProvider } = require('@greencoast/discord.js-extended');
-const locales = require('./locale');
+import 'dotenv/config';
+import path from 'path';
+import logger from '@greencoast/logger';
+import { IntentsBitField } from 'discord.js';
+import { ExtendedClient, ConfigProvider } from '@greencoast/discord.js-extended';
+import { ActivityType } from 'discord-api-types/v10';
+import * as locales from './locale';
 
 // The environment object contains the property: DISCORD_TOKEN with the bot's token.
 const config = new ConfigProvider({
   env: process.env,
-  configPath: path.join(__dirname, './config/settings.json'),
+  configPath: path.join(__dirname, '../config/settings.json'),
   default: {
     PREFIX: '!',
     OPTIONAL_NUMBER: null,
@@ -25,7 +26,7 @@ const config = new ConfigProvider({
   customValidators: {
     MY_ENUM: (value) => {
       const validValues = ['enum1', 'enum2', 'enum3'];
-      if (!validValues.includes(value)) {
+      if (!validValues.includes(value as string)) {
         throw new TypeError(`${value} is not a valid value for MY_ENUM, you should use: ${validValues.join(', ')}`);
       }
     }
@@ -33,21 +34,21 @@ const config = new ConfigProvider({
 });
 
 const client = new ExtendedClient({
-  prefix: config.get('PREFIX'),
+  prefix: config.get<string>('PREFIX'),
   owner: '191330192868769793',
   debug: true,
   presence: {
     templates: ['{num_guilds} guilds!', 'random number {random}', '{num_members} members!', 'owner: {owner_name}', '{uptime}', '{ready_time}'],
     refreshInterval: 10000, // Presence gets changed every 10 seconds.
     status: 'dnd',
-    type: 'COMPETING',
+    type: ActivityType.Competing,
     customGetters: {
       random: async() => Math.random().toString()
     }
   },
   config,
   errorOwnerReporting: true,
-  intents: new IntentsBitField([IntentsBitField.Flags.Guilds, IntentsBitField.Flags.GuildMessages, IntentsBitField.Flags.MessageContent]).bitfield,
+  intents: [IntentsBitField.Flags.Guilds, IntentsBitField.Flags.GuildMessages, IntentsBitField.Flags.MessageContent],
   testingGuildID: '756628171494916098',
   localizer: {
     defaultLocale: 'en',
@@ -69,12 +70,12 @@ client.registry
 client.on('ready', async() => {
   logger.info(`Listening for commands with prefix: ${client.prefix}`);
 
-  await client.localizer.init(); // Initialize the localizer after setting up the data provider.
+  await client.localizer!.init(); // Initialize the localizer after setting up the data provider.
 
-  client.deployer.rest.setToken(config.get('TOKEN'));
+  client.deployer.rest.setToken(config.get<string>('TOKEN')!);
   await client.deployer.deployToTestingGuild(); // Deploy slash commands to the testing guild.
 
-  logger.info(`My numbers from the environment variable are: ${client.config.get('MY_NUM_ARRAY').join(', ')}`);
+  logger.info(`My numbers from the environment variable are: ${config.get<string[]>('MY_NUM_ARRAY')!.join(', ')}`);
 });
 
-client.login(config.get('TOKEN'));
+client.login(config.get<string>('TOKEN'));

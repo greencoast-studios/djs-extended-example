@@ -1,7 +1,8 @@
-const { RegularCommand } = require('@greencoast/discord.js-extended');
+import { RegularCommand, ExtendedClient } from '@greencoast/discord.js-extended'
+import { Message } from 'discord.js';
 
 class PingCommand extends RegularCommand {
-  constructor(client) {
+  constructor(client: ExtendedClient) {
     super(client, {
       name: 'ping',
       description: 'Ping-Pong',
@@ -9,7 +10,7 @@ class PingCommand extends RegularCommand {
     });
   }
 
-  run(message) {
+  run(message: Message) {
     return message.reply('Pong!');
   }
 }

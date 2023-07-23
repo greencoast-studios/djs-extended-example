@@ -1,12 +1,13 @@
-const { SlashCommand } = require('@greencoast/discord.js-extended');
-const { SlashCommandBuilder } = require('discord.js');
+import { SlashCommand, ExtendedClient } from '@greencoast/discord.js-extended';
+import { SlashCommandBuilder, ChatInputCommandInteraction } from 'discord.js';
 
 class DataTestSlashCommand extends SlashCommand {
-  constructor(client) {
+  constructor(client: ExtendedClient) {
     super(client, {
       name: 'data_test',
       description: 'Test the data in the data provider.',
       group: 'slash',
+      guildOnly: true,
       dataBuilder: new SlashCommandBuilder()
         .addSubcommand((input) => {
           return input
@@ -99,34 +100,44 @@ class DataTestSlashCommand extends SlashCommand {
     });
   }
 
-  async run(interaction) {
+  async run(interaction: ChatInputCommandInteraction) {
     const subCommand = interaction.options.getSubcommand();
-    const key = interaction.options.getString('key');
-    const value = interaction.options.getString('value');
+    const key = interaction.options.getString('key')!;
+    const value = interaction.options.getString('value')!;
 
     switch(subCommand) {
       case 'get':
-        return interaction.reply(`Here's the data: \`${await this.client.dataProvider.get(interaction.guild, key)}\``);
+        await interaction.reply(`Here's the data: \`${await this.client.dataProvider!.get(interaction.guild!, key)}\``);
+        return;
       case 'get_global':
-        return interaction.reply(`Here's the data: \`${await this.client.dataProvider.getGlobal(key)}\``);
+        await interaction.reply(`Here's the data: \`${await this.client.dataProvider!.getGlobal(key)}\``);
+        return;
       case 'set':
-        await this.client.dataProvider.set(interaction.guild, key, value);
-        return interaction.reply(`Set data for \`${key}\` to \`${value}\`.`);
+        await this.client.dataProvider!.set(interaction.guild!, key, value);
+        await interaction.reply(`Set data for \`${key}\` to \`${value}\`.`);
+        return;
       case 'set_global':
-        await this.client.dataProvider.setGlobal(key, value);
-        return interaction.reply(`Set data for \`${key}\` to \`${value}\`.`);
+        await this.client.dataProvider!.setGlobal(key, value);
+        await interaction.reply(`Set data for \`${key}\` to \`${value}\`.`);
+        return;
       case 'delete':
-        await this.client.dataProvider.delete(interaction.guild, key);
-        return interaction.reply(`Removed data for \`${key}\`.`);
+        await this.client.dataProvider!.delete(interaction.guild!, key);
+        await interaction.reply(`Removed data for \`${key}\`.`);
+        return;
       case 'delete_global':
-        await this.client.dataProvider.deleteGlobal(key);
-        return interaction.reply(`Removed data for \`${key}\`.`);
+        await this.client.dataProvider!.deleteGlobal(key);
+        await interaction.reply(`Removed data for \`${key}\`.`);
+        return;
       case 'clear':
-        await this.client.dataProvider.clear(interaction.guild);
-        return interaction.reply('Cleared data for this guild.');
+        await this.client.dataProvider!.clear(interaction.guild!);
+        await interaction.reply('Cleared data for this guild.');
+        return;
       case 'clear_global':
-        await this.client.dataProvider.clearGlobal();
-        return interaction.reply('Cleared data globally.');
+        await this.client.dataProvider!.clearGlobal();
+        await interaction.reply('Cleared data globally.');
+        return;
+      default:
+        return;
     }
   }
 }

@@ -1,8 +1,8 @@
-const { SlashCommand } = require('@greencoast/discord.js-extended');
-const { SlashCommandBuilder } = require('discord.js');
+import { SlashCommand, ExtendedClient } from '@greencoast/discord.js-extended';
+import { SlashCommandBuilder, ChatInputCommandInteraction } from 'discord.js';
 
 class ThrowSlashCommand extends SlashCommand {
-  constructor(client) {
+  constructor(client: ExtendedClient) {
     super(client, {
       name: 'throw_slash',
       aliases: ['t'],
@@ -12,7 +12,7 @@ class ThrowSlashCommand extends SlashCommand {
     });
   }
 
-  async run(interaction) {
+  async run(interaction: ChatInputCommandInteraction) {
     await interaction.reply('hi');
     throw new Error('Oops!');
   }

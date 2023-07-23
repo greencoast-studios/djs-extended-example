@@ -1,7 +1,6 @@
-require('dotenv').config();
-const path = require('path');
-const { ExtendedClient, ConfigProvider } = require('@greencoast/discord.js-extended');
-const { IntentsBitField } = require('discord.js');
+import 'dotenv/config';
+import path from 'path';
+import { ExtendedClient, ConfigProvider } from '@greencoast/discord.js-extended';
 
 const config = new ConfigProvider({
   env: process.env,
@@ -13,7 +12,7 @@ const config = new ConfigProvider({
 
 const client = new ExtendedClient({
   config,
-  intents: new IntentsBitField().bitfield
+  intents: []
 });
 
 client.registry
@@ -26,7 +25,7 @@ client.registry
 
 client.on('ready', async() => {
   try {
-    client.deployer.rest.setToken(config.get('TOKEN'));
+    client.deployer.rest.setToken(config.get<string>('TOKEN')!);
     await client.deployer.deployGlobally();
   } catch (error) {
     console.error('Something happened!', error);
@@ -39,4 +38,4 @@ client.on('commandsDeployed', (commands) => {
   process.exit(0);
 });
 
-client.login(client.config.get('TOKEN'));
+client.login(config.get<string>('TOKEN')!);

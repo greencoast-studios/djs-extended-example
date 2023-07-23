@@ -1,7 +1,8 @@
-const { RegularCommand } = require('@greencoast/discord.js-extended');
+import { RegularCommand, ExtendedClient } from '@greencoast/discord.js-extended';
+import { Message } from 'discord.js';
 
 class ArgsListCommand extends RegularCommand {
-  constructor(client) {
+  constructor(client: ExtendedClient) {
     super(client, {
       name: 'args',
       description: 'Get list of args.',
@@ -9,7 +10,7 @@ class ArgsListCommand extends RegularCommand {
     });
   }
 
-  run(message, args) {
+  run(message: Message, args: string[]) {
     return message.reply(args.join('\n- '));
   }
 }

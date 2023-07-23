@@ -9,7 +9,9 @@ const EXTRA = {
   'extra.nice_weather': "¡La temperatura es de {temperature}, qué buen clima!"
 };
 
-module.exports = {
+const strings = {
   ...GREETINGS,
   ...EXTRA
-};
+}
+
+export default strings;

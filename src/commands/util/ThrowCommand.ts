@@ -1,7 +1,7 @@
-const { RegularCommand } = require('@greencoast/discord.js-extended');
+import { RegularCommand, ExtendedClient } from '@greencoast/discord.js-extended';
 
 class ThrowCommand extends RegularCommand {
-  constructor(client) {
+  constructor(client: ExtendedClient) {
     super(client, {
       name: 'throw',
       description: 'Throws an error.',
@@ -9,7 +9,7 @@ class ThrowCommand extends RegularCommand {
     });
   }
 
-  run(message) {
+  async run() {
     throw new Error('Oops!');
   }
 }
